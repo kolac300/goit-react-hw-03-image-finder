@@ -10,6 +10,12 @@ export class Modal extends Component {
     toggleModal: PropTypes.func.isRequired,
   };
 
+  backdropClick = e => {
+    if (e.target === e.currentTarget) {
+      this.props.toggleModal();
+    }
+  };
+
   hendlKeyDown = e => {
     if (e.code === 'Escape') {
       this.props.toggleModal();
@@ -23,9 +29,9 @@ export class Modal extends Component {
   };
 
   render() {
-    const { toggleModal, modalURL } = this.props;
+    const { modalURL } = this.props;
     return createPortal(
-      <Div onClick={toggleModal}>
+      <Div onClick={this.backdropClick}>
         <div>
           <img src={modalURL} alt="pic" />
         </div>

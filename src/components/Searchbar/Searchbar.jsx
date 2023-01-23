@@ -12,8 +12,8 @@ export class Searchbar extends Component {
     updateSearch: PropTypes.func.isRequired,
   };
   onSubmit = (value, ections) => {
-    if (value.search === '') {
-      toast.error('Nothing searched, Try again');
+    if (value.search === '' || value.search.length > 80) {
+      toast.error('Invalid query');
     } else {
       this.props.updateSearch(value.search);
       ections.resetForm();

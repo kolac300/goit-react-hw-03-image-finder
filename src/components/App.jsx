@@ -16,47 +16,44 @@ export default class App extends Component {
     modalURL: '',
     isLoading: false,
   };
-  async componentDidUpdate(prevProp, prevState) {
+  componentDidUpdate(_, prevState) {
     const { search, page } = this.state;
 
     if (prevState.search !== search || prevState.page !== page) {
-      try {
-        this.setState({ isLoading: true });
-        const images = await fetchImages(search, page);
-        this.setState(prev => {
-          return { images: [...prev.images, ...images] };
-        });
-      } catch (error) {
-        toast.error('Nothing searched, Try again');
-      } finally {
-        this.setState({ isLoading: false });
-      }
+      this.setState({ isLoading: true });
+      fetchImages(search, page)
+        .then(images => {
+          if (images.length)
+            this.setState(prev => ({ images: [...prev.images, ...images] }));
+          else toast.error(`any pictures weren't found`);
+        })
+        .catch(er => {
+          toast.error(`something is wrong, try again`);
+        })
+        .finally(() => this.setState({ isLoading: false }));
     }
   }
 
   updateSearch = search => {
-    if (this.state.search === search) {
-      toast.error('qweries are same');
-    } else {
+    if (this.state.search === search)
+      toast.error(`you have alredy found ${search}`);
+    else
       this.setState({
         search: search,
         page: 1,
         images: [],
       });
-    }
   };
   updatePage = () => {
-    this.setState(prev => {
-      return { page: prev.page + 1 };
-    });
+    this.setState(prev => ({
+      page: prev.page + 1,
+    }));
   };
   toggleModal = url => {
-    this.setState(prev => {
-      return {
-        modal: !prev.modal,
-        modalURL: url,
-      };
-    });
+    this.setState(prev => ({
+      modal: !prev.modal,
+      modalURL: url,
+    }));
   };
 
   render() {
@@ -73,7 +70,7 @@ export default class App extends Component {
         <Searchbar updateSearch={updateSearch} />
         <ImageGallery showModal={toggleModal} images={images} />
         {isLoading && <Loader />}
-        {!!images.length && <Button updatePage={updatePage} />}
+        {!!images.length && !isLoading && <Button updatePage={updatePage} />}
         {modal && <Modal toggleModal={toggleModal} modalURL={modalURL} />}
       </Wrapper>
     );
