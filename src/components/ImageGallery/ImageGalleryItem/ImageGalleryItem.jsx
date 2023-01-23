@@ -10,11 +10,11 @@ export class ImageGalleryItem extends Component {
 		showModal: PropTypes.func.isRequired,
 	}
 	render() {
-		const { showModal, id, bigViewURL, smallViewURL } = this.props
+		const { showModal, bigViewURL, smallViewURL } = this.props
 		return (
 
 			<Li onClick={() =>
-				showModal(id, bigViewURL)}>
+				showModal(bigViewURL)}>
 				<img src={smallViewURL}
 					alt="pictures" /></Li>
 

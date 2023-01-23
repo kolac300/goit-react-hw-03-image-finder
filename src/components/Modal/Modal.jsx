@@ -29,7 +29,7 @@ export class Modal extends Component {
 		return (
 			createPortal(<Div onClick={toggleModal}>
 				<div>
-					<img src={modalURL} alt="" />
+					<img src={modalURL} alt="pic" />
 				</div></Div>, modal)
 		)
 	}

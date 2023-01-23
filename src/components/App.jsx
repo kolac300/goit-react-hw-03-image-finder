@@ -51,7 +51,7 @@ export default class App extends Component {
     })
 
   }
-  toggleModal = (id, url) => {
+  toggleModal = (url) => {
     this.setState(prev => {
       return {
         modal: !prev.modal,
@@ -59,23 +59,28 @@ export default class App extends Component {
       }
     })
   }
+
   render() {
+    const { updateSearch, toggleModal, updatePage, state: { images, modalURL, isLoading, modal } } = this
 
     return (
-      // refactoting this
-      <Wrapper>
+      < Wrapper >
         <Toaster
           position="top-center"
           reverseOrder={false}
         />
-        <Searchbar updateSearch={this.updateSearch} />
-        <ImageGallery showModal={this.toggleModal} images={this.state.images} />
-        {this.state.isLoading && <Loader />}
-        {!!this.state.images.length &&
-          <Button updatePage={this.updatePage} />}
-        {this.state.modal &&
-          <Modal toggleModal={this.toggleModal} modalURL={this.state.modalURL} />}
-      </Wrapper>
+        <Searchbar updateSearch={updateSearch} />
+        <ImageGallery showModal={toggleModal} images={images} />
+        {isLoading && <Loader />}
+        {
+          !!images.length &&
+          <Button updatePage={updatePage} />
+        }
+        {
+          modal &&
+          <Modal toggleModal={toggleModal} modalURL={modalURL} />
+        }
+      </Wrapper >
     )
   }
 }
