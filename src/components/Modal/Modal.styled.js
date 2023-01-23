@@ -10,7 +10,8 @@ export const Div = styled.div`
   align-items: center;
   background-color: rgba(0, 0, 0, 0.8);
 
-div img{
-  max-width: calc(100vw - 48px);
-  max-height: calc(100vh - 24px);
-}`
+  div img {
+    max-width: calc(100vw - 48px);
+    max-height: calc(100vh - 24px);
+  }
+`;
