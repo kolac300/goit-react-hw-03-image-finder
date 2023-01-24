@@ -15,6 +15,7 @@ export default class App extends Component {
     modal: false,
     modalURL: '',
     isLoading: false,
+    isActiveButton: false,
   };
   componentDidUpdate(_, prevState) {
     const { search, page } = this.state;
@@ -23,9 +24,16 @@ export default class App extends Component {
       this.setState({ isLoading: true });
       fetchImages(search, page)
         .then(images => {
-          if (images.length)
-            this.setState(prev => ({ images: [...prev.images, ...images] }));
-          else toast.error(`any pictures weren't found`);
+          const { hits, totalHits } = images;
+          if (hits.length) {
+            this.setState(prev => ({
+              images: [...prev.images, ...hits],
+              isActiveButton: true,
+            }));
+            if (totalHits < page * 12) {
+              this.setState({ isActiveButton: false });
+            }
+          } else toast.error(`any pictures weren't found`);
         })
         .catch(er => {
           toast.error(`something is wrong, try again`);
@@ -61,7 +69,7 @@ export default class App extends Component {
       updateSearch,
       toggleModal,
       updatePage,
-      state: { images, modalURL, isLoading, modal },
+      state: { images, modalURL, isLoading, modal, isActiveButton },
     } = this;
 
     return (
@@ -70,7 +78,7 @@ export default class App extends Component {
         <Searchbar updateSearch={updateSearch} />
         <ImageGallery showModal={toggleModal} images={images} />
         {isLoading && <Loader />}
-        {!!images.length && !isLoading && <Button updatePage={updatePage} />}
+        {isActiveButton && !isLoading && <Button updatePage={updatePage} />}
         {modal && <Modal toggleModal={toggleModal} modalURL={modalURL} />}
       </Wrapper>
     );

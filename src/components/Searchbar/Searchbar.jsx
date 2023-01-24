@@ -12,10 +12,11 @@ export class Searchbar extends Component {
     updateSearch: PropTypes.func.isRequired,
   };
   onSubmit = (value, ections) => {
-    if (value.search === '' || value.search.length > 80) {
+    const { search } = value;
+    if (search.trim() === '' || search.trim().length > 50) {
       toast.error('Invalid query');
     } else {
-      this.props.updateSearch(value.search);
+      this.props.updateSearch(search);
       ections.resetForm();
     }
   };
