@@ -9,7 +9,7 @@ export const Div = styled.div`
   justify-content: center;
   align-items: center;
   background-color: rgba(0, 0, 0, 0.8);
-
+  z-index: 2;
   div img {
     max-width: calc(100vw - 48px);
     max-height: calc(100vh - 24px);
